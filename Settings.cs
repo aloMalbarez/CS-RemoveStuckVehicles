@@ -6,7 +6,7 @@ namespace RemoveStuckVehicles
     {
         private Settings()
         {
-            Tag = "[ARIS] Remove Stuck Vehicles";
+            Tag = "Remove Stuck Vehicles [Fixed for v1.2+]";
         }
 
         private static readonly Settings _Instance = new Settings();
