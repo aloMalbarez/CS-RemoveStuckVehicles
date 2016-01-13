@@ -67,21 +67,24 @@ namespace RemoveStuckVehicles
 
         private void Update()
         {
-            if (!WorldInfoPanel.AnyWorldInfoPanelOpen()) return;
-
-            InstanceID id = WorldInfoPanel.GetCurrentInstanceID();
-
-            if (id.IsEmpty) return;
-
-            if (id.Vehicle == 0)
+            if ((Singleton<SimulationManager>.instance.m_currentTickIndex & 15) == 15)
             {
-                foreach (UIButton button in _buttons)
-                    button.Hide();
-            }
-            else
-            {
-                foreach (UIButton button in _buttons)
-                    button.Show();
+                if (!WorldInfoPanel.AnyWorldInfoPanelOpen()) return;
+
+                InstanceID id = WorldInfoPanel.GetCurrentInstanceID();
+
+                if (id.IsEmpty) return;
+
+                if (id.Vehicle == 0)
+                {
+                    foreach (UIButton button in _buttons)
+                        button.Hide();
+                }
+                else
+                {
+                    foreach (UIButton button in _buttons)
+                        button.Show();
+                }
             }
         }
 

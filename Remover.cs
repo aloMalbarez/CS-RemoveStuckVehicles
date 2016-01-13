@@ -23,6 +23,9 @@ namespace RemoveStuckVehicles
         private bool _initialized;
         private bool _terminated;
 
+        InstanceID instanceID = new InstanceID();
+        bool remove_init;
+
         protected bool IsOverwatched()
         {
             #if DEBUG
@@ -95,31 +98,24 @@ namespace RemoveStuckVehicles
                 }
                 else
                 {
-                    if (WorldInfoPanel.AnyWorldInfoPanelOpen())
+                    remove_init = false;
+                    if ((Singleton<SimulationManager>.instance.m_currentFrameIndex / 16 % 8) == 0)
                     {
-                        _selected = WorldInfoPanel.GetCurrentInstanceID();
+                        VehicleManager instance = Singleton<VehicleManager>.instance;
+                        SkylinesOverwatch.Data data = SkylinesOverwatch.Data.Instance;
 
-                        if (_selected.IsEmpty || _selected.Vehicle == 0)
-                            _selected = default(InstanceID);
-                    }
-                    else
-                        _selected = default(InstanceID);
-                    
-                    VehicleManager instance = Singleton<VehicleManager>.instance;
-                    InstanceID instanceID = new InstanceID();
-                    SkylinesOverwatch.Data data = SkylinesOverwatch.Data.Instance;
+                        foreach (ushort i in data.VehiclesUpdated)
+                        {
+                            Vehicle v = instance.m_vehicles.m_buffer[(int)i];
 
-                    foreach (ushort i in data.VehiclesUpdated)
-                    {
-                        Vehicle v = instance.m_vehicles.m_buffer[(int)i];
+                            bool isBlocked = !data.IsCar(i) && v.m_blockCounter >= 64; // we will let the game decide when to remove a blocked car
+                            bool isConfused = v.Info.m_vehicleAI.GetLocalizedStatus(i, ref v, out instanceID) == _confused;
 
-                        bool isBlocked = !data.IsCar(i) && v.m_blockCounter >= 64; // we will let the game decide when to remove a blocked car
-                        bool isConfused = v.Info.m_vehicleAI.GetLocalizedStatus(i, ref v, out instanceID) == _confused; 
+                            if (!isBlocked && !isConfused)
+                                continue;
 
-                        if (!isBlocked && !isConfused)
-                            continue;
-
-                        RemoveVehicle(i);
+                            RemoveVehicle(i);
+                        }
                     }
 
                     foreach (ushort i in _helper.ManualRemovalRequests)
@@ -155,6 +151,20 @@ namespace RemoveStuckVehicles
 
         private void RemoveVehicle(ushort vehicle)
         {
+            if (!remove_init)
+            {
+                if (WorldInfoPanel.AnyWorldInfoPanelOpen())
+                {
+                    _selected = WorldInfoPanel.GetCurrentInstanceID();
+
+                    if (_selected.IsEmpty || _selected.Vehicle == 0)
+                        _selected = default(InstanceID);
+                }
+                else
+                    _selected = default(InstanceID);
+                remove_init = true;
+            }
+
             if (!_selected.IsEmpty && _selected.Vehicle == vehicle)
             {
                 WorldInfoPanel.HideAllWorldInfoPanels();
