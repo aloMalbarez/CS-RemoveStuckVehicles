@@ -61,6 +61,7 @@
     <Compile Include="Remover.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="RemoveButton.cs" />
+    <Compile Include="Translation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -69,6 +70,10 @@
       <Name>SkylinesOverwatch</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\text.txt" />
+    <EmbeddedResource Include="Resources\text_ja.txt" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)"

@@ -42,6 +42,8 @@ namespace RemoveStuckVehicles
 
             if (_removeButton != null) UnityEngine.Object.Destroy(_removeButton);
             if (_gameObject   != null) UnityEngine.Object.Destroy(_gameObject);
+
+            Translation.Release();
         }
     }
 }

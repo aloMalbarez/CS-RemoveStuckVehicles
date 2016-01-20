@@ -39,7 +39,7 @@ namespace RemoveStuckVehicles
 
                     button.eventClick += RemoveButtonHandler;
 
-                    button.text = "Remove Vehicle";
+                    button.text = Translation.GetString("Remove_Vehicle");
                     button.name = String.Format("{0} :: {1}", _settings.Tag, button.text);
                     button.autoSize = true;
 
@@ -75,7 +75,7 @@ namespace RemoveStuckVehicles
 
                 if (id.IsEmpty) return;
 
-                if (id.Vehicle == 0)
+                if (id.Vehicle == 0 && id.ParkedVehicle == 0)
                 {
                     foreach (UIButton button in _buttons)
                         button.Hide();
@@ -96,11 +96,45 @@ namespace RemoveStuckVehicles
 
         private void RemoveButtonHandler(UIComponent component, UIMouseEventParameter param)
         {
-            ushort vehicle = WorldInfoPanel.GetCurrentInstanceID().Vehicle;
+            InstanceID id = WorldInfoPanel.GetCurrentInstanceID();
 
-            if (vehicle == 0) return;
+            if (id.IsEmpty) return;
 
-            _helper.ManualRemovalRequests.Add(vehicle);
+            if (id.Vehicle != 0)
+            {
+                _helper.ManualRemovalRequests.Add(id.Vehicle);
+            }
+            else if (id.ParkedVehicle != 0)
+            {
+                InstanceID _selected;
+                InstanceID _dummy = default(InstanceID);
+                if (WorldInfoPanel.AnyWorldInfoPanelOpen())
+                {
+                    _selected = WorldInfoPanel.GetCurrentInstanceID();
+
+                    if (_selected.IsEmpty || _selected.ParkedVehicle == 0)
+                        _selected = default(InstanceID);
+                }
+                else
+                    _selected = default(InstanceID);
+
+                if (!_selected.IsEmpty && _selected.ParkedVehicle == id.ParkedVehicle)
+                {
+                    WorldInfoPanel.HideAllWorldInfoPanels();
+
+                    if (!InstanceManager.IsValid(_dummy) || _dummy.ParkedVehicle == id.ParkedVehicle)
+                    {
+                        _dummy = default(InstanceID);
+                        _dummy.Type = InstanceType.ParkedVehicle;
+                    }
+
+                    Singleton<InstanceManager>.instance.SelectInstance(_dummy);
+                    Singleton<InstanceManager>.instance.FollowInstance(_dummy);
+                }
+
+                Singleton<VehicleManager>.instance.m_parkedVehicles.m_buffer[(int)id.ParkedVehicle].m_flags |= 2;
+                Singleton<VehicleManager>.instance.ReleaseParkedVehicle((ushort)id.ParkedVehicle);
+            }
         }
     }
 }
