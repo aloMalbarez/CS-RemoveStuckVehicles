@@ -1,1 +1,4 @@
 ﻿Remove_Vehicle 除去
+Settings 設定
+RemoveConfusedVehicles 「迷子」状態になった乗り物を自動的に発見して除去する
+RemoveBlockedVehicles 進行を妨げられて動かなくなった乗り物（車・トラック以外）を自動的に発見して除去する

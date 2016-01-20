@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RemoveStuckVehicles
+﻿namespace RemoveStuckVehicles
 {
     public sealed class Settings
     {

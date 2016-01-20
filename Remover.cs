@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-
-using ICities;
-using ColossalFramework;
-using ColossalFramework.Math;
+﻿using ColossalFramework;
 using ColossalFramework.Plugins;
-using ColossalFramework.UI;
-using UnityEngine;
+using ICities;
+using System;
+using System.Collections.Generic;
 
 namespace RemoveStuckVehicles
 {
@@ -108,8 +103,8 @@ namespace RemoveStuckVehicles
                         {
                             Vehicle v = instance.m_vehicles.m_buffer[(int)i];
 
-                            bool isBlocked = !data.IsCar(i) && v.m_blockCounter >= 64; // we will let the game decide when to remove a blocked car
-                            bool isConfused = v.Info.m_vehicleAI.GetLocalizedStatus(i, ref v, out instanceID) == _confused;
+                            bool isBlocked = Identity.ModConf.RemoveBlockedVehicles && !data.IsCar(i) && v.m_blockCounter >= 64; // we will let the game decide when to remove a blocked car
+                            bool isConfused = Identity.ModConf.RemoveConfusedVehicles && v.Info.m_vehicleAI.GetLocalizedStatus(i, ref v, out instanceID) == _confused;
 
                             if (!isBlocked && !isConfused)
                                 continue;

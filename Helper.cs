@@ -1,13 +1,6 @@
-﻿using System;
+﻿using ColossalFramework.Plugins;
+using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
-
-using ICities;
-using ColossalFramework;
-using ColossalFramework.Plugins;
-using ColossalFramework.Math;
-using ColossalFramework.UI;
 using UnityEngine;
 
 namespace RemoveStuckVehicles

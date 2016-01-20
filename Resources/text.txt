@@ -1,1 +1,4 @@
 ﻿Remove_Vehicle Remove Vehicle
+Settings Settings
+RemoveConfusedVehicles Detect and remove vehicles that are confused automatically
+RemoveBlockedVehicles Detect and remove vehicles that are blocked automatically
