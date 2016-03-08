@@ -29,11 +29,28 @@ namespace RemoveStuckVehicles
             group.AddCheckbox(Translation.GetString("RemoveConfusedVehicles"), ModConf.RemoveConfusedVehicles, delegate (bool isChecked)
             {
                 Identity.ModConf.RemoveConfusedVehicles = isChecked;
+                if (isChecked)
+                {
+                    Remover._baselined = false;
+                }
                 ModConfiguration.Serialize(Identity.configPath, Identity.ModConf);
             });
             group.AddCheckbox(Translation.GetString("RemoveBlockedVehicles"), ModConf.RemoveBlockedVehicles, delegate (bool isChecked)
             {
                 Identity.ModConf.RemoveBlockedVehicles = isChecked;
+                if (isChecked)
+                {
+                    Remover._baselined = false;
+                }
+                ModConfiguration.Serialize(Identity.configPath, Identity.ModConf);
+            });
+            group.AddCheckbox(Translation.GetString("RemoveConfusedCitizensVehicles"), ModConf.RemoveConfusedCitizensVehicles, delegate (bool isChecked)
+            {
+                Identity.ModConf.RemoveConfusedCitizensVehicles = isChecked;
+                if(isChecked)
+                {
+                    Remover._baselined = false;
+                }
                 ModConfiguration.Serialize(Identity.configPath, Identity.ModConf);
             });
         }

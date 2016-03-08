@@ -7,11 +7,13 @@ namespace RemoveStuckVehicles
     {
         public bool RemoveConfusedVehicles;
         public bool RemoveBlockedVehicles;
+        public bool RemoveConfusedCitizensVehicles;
 
         public ModConfiguration()
 		{
             this.RemoveConfusedVehicles = true;
             this.RemoveBlockedVehicles = true;
+            this.RemoveConfusedCitizensVehicles = false;
         }
 
 		public static bool Serialize(string filename, ModConfiguration config)

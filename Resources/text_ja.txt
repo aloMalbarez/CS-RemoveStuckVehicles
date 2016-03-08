@@ -2,3 +2,4 @@
 Settings 設定
 RemoveConfusedVehicles 「迷子」状態になった乗り物を自動的に発見して除去する
 RemoveBlockedVehicles 進行を妨げられて動かなくなった乗り物（車・トラック以外）を自動的に発見して除去する
+RemoveConfusedCitizensVehicles 所有者が「迷子」状態になった乗り物を自動的に発見して除去する
